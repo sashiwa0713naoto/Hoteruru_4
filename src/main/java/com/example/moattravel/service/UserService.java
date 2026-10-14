@@ -54,7 +54,6 @@ public class UserService {
     userRepository.save(user);
     }
     
-    // メールアドレスが登録済みかどうかをチェックする
     public boolean isEmailRegistered(String email) {
         User user = userRepository.findByEmail(email);
         return user != null;
@@ -63,14 +62,12 @@ public class UserService {
         return password.equals(passwordConfirmation);
     }
 
-    // ユーザーを有効にする
 @Transactional
 public void enableUser(User user) {
 	user.setEnabled(true); 
 	userRepository.save(user);}
 
 
-    // メールアドレスが変更されているかどうかをチェックする
     public boolean isEmailChanged(UserEditForm userEditForm) {
         User currentUser = userRepository.getReferenceById(userEditForm.getId());
         return !userEditForm.getEmail().equals(currentUser.getEmail());
