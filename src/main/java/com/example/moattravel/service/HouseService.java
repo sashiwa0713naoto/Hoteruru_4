@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.moattravel.entity.House;
+import com.example.moattravel.form.HouseEditForm;
 import com.example.moattravel.form.HouseRegisterForm;
 import com.example.moattravel.repository.HouseRepository;
 
@@ -62,4 +63,9 @@ public class HouseService {
             e.printStackTrace();
         }
     }
+
+	public void update(HouseEditForm houseEditForm) {
+		// TODO 自動生成されたメソッド・スタブ
+		
+	}
 }
