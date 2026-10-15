@@ -2,6 +2,7 @@ package com.example.moattravel.service;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -31,7 +32,6 @@ public class ReservationService {
         this.userRepository = userRepository;
     }
 
-    // 文字列型のチェックイン・チェックアウト日を受け取って料金を計算するメソッド
     public Integer calculateAmount(String checkinDate, String checkoutDate, Integer price) {
         LocalDate checkin = LocalDate.parse(checkinDate);
         LocalDate checkout = LocalDate.parse(checkoutDate);
@@ -57,6 +57,17 @@ public class ReservationService {
         reservationRepository.save(reservation);
     }
 
+    // 管理者用：すべての予約をリストで取得するメソッド（エラー対策）
+    public List<Reservation> findAllReservations() {
+        return reservationRepository.findAll();
+    }
+
+    // 管理者用：すべての予約をページング付きで取得するメソッド
+    public Page<Reservation> findAllReservations(Pageable pageable) {
+        return reservationRepository.findAllByOrderByCreatedAtDesc(pageable);
+    }
+
+    // 会員用：特定のユーザーの予約を取得するメソッド
     public Page<Reservation> findByUserOrderByCreatedAtDesc(User user, Pageable pageable) {
         return reservationRepository.findByUserOrderByCreatedAtDesc(user, pageable);
     }
