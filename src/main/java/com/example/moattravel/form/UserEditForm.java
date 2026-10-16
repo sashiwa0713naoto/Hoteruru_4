@@ -1,5 +1,6 @@
 package com.example.moattravel.form;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -28,5 +29,6 @@ public class UserEditForm {
     private String phoneNumber;
 
     @NotBlank(message = "メールアドレスを入力してください。")
+    @Email(message = "メールアドレスの形式が不正です。")
     private String email;
 }

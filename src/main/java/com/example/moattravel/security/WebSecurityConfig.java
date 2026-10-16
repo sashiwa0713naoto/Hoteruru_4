@@ -25,12 +25,12 @@ public class WebSecurityConfig {
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 	    http
-	        .authorizeHttpRequests(auth -> auth
-	    .requestMatchers("/css/**", "/js/**", "/images/**", "/storage/**", "/", "/signup", "/houses/**").permitAll()
-        .requestMatchers("/admin/**").hasRole("ADMIN")
-        .anyRequest().authenticated()
-        )
-	        .formLogin(form -> form
+	        .authorizeHttpRequests((requests) -> requests
+	            .requestMatchers("/css/**", "/images/**", "/js/**", "/", "/signup/**", "/houses/**").permitAll() // 全員アクセス可能
+	            .requestMatchers("/admin/**").hasRole("ADMIN") // 管理者のみ
+	            .requestMatchers("/user/**").hasRole("GENERAL") // 一般ユーザー（閲覧者）用
+	            .anyRequest().authenticated()
+	        )   .formLogin(form -> form
 	        	    .loginPage("/login")
 	        	    .loginProcessingUrl("/login")
 	        	    .successHandler(new AuthenticationSuccessHandler() {

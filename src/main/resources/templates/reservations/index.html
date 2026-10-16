@@ -16,15 +16,6 @@
                         <div class="col-xxl-9 col-xl-10 col-lg-11 mx-auto">
                             <h1 class="mb-4 text-center">予約一覧</h1>
 
-                            <div class="d-flex justify-content-between align-items-end flex-wrap mb-3">
-                                <form method="get" th:action="@{/admin/reservations}" class="moattravel-search-box mb-3">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" name="keyword" th:value="${keyword}" placeholder="民宿名・会員名">
-                                        <button type="submit" class="btn text-white shadow-sm moattravel-btn">検索</button>
-                                    </div>
-                                </form>
-                            </div>
-
                             <div th:if="${successMessage}" class="alert alert-info" role="alert">
                                 <span th:text="${successMessage}"></span>
                             </div>
@@ -32,24 +23,30 @@
                             <table class="table table-striped align-middle">
                                 <thead>
                                     <tr>
-                                        <th scope="col">ID</th>
                                         <th scope="col">民宿名</th>
-                                        <th scope="col">会員名</th>
                                         <th scope="col">チェックイン日</th>
                                         <th scope="col">チェックアウト日</th>
                                         <th scope="col">宿泊人数</th>
                                         <th scope="col">宿泊料金</th>
+                                        <th scope="col" class="text-center">キャンセル</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr th:each="reservation : ${reservationPage}">
-                                        <td th:text="${reservation.id}"></td>
-                                        <td th:text="${reservation.house.name}"></td>
-                                        <td th:text="${reservation.user.name}"></td>
+                                        <td>
+                                            <a th:href="@{/houses/__${reservation.house.id}__}" th:text="${reservation.house.name}"></a>
+                                        </td>
                                         <td th:text="${reservation.checkinDate}"></td>
                                         <td th:text="${reservation.checkoutDate}"></td>
                                         <td th:text="${reservation.numberOfPeople + '名'}"></td>
                                         <td th:text="${#numbers.formatInteger(reservation.amount, 1, 'COMMA') + '円'}"></td>
+                                        
+                                        <!-- キャンセルボタン -->
+                                        <td class="text-center">
+                                            <form method="post" th:action="@{/reservations/__${reservation.id}__/delete}" onsubmit="return confirm('本当にこの予約をキャンセルしてもよろしいですか？');">
+                                                <button type="submit" class="btn btn-danger btn-sm text-white">キャンセル</button>
+                                            </form>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -60,15 +57,15 @@
                                     <ul class="pagination">
                                         <li class="page-item">
                                             <span th:if="${reservationPage.isFirst()}" class="page-link disabled">前</span>
-                                            <a th:unless="${reservationPage.isFirst()}" th:href="@{/admin/reservations(page = ${reservationPage.number - 1}, keyword = ${keyword})}" class="page-link moattravel-page-link">前</a>
+                                            <a th:unless="${reservationPage.isFirst()}" th:href="@{/reservations(page = ${reservationPage.number - 1})}" class="page-link moattravel-page-link">前</a>
                                         </li>
                                         <li th:each="i : ${#numbers.sequence(0, reservationPage.totalPages - 1)}" class="page-item">
                                             <span th:if="${i == reservationPage.number}" class="page-link active moattravel-active" th:text="${i + 1}"></span>
-                                            <a th:unless="${i == reservationPage.number}" th:href="@{/admin/reservations(page = ${i}, keyword = ${keyword})}" class="page-link moattravel-page-link" th:text="${i + 1}"></a>
+                                            <a th:unless="${i == reservationPage.number}" th:href="@{/reservations(page = ${i})}" class="page-link moattravel-page-link" th:text="${i + 1}"></a>
                                         </li>
                                         <li class="page-item">
                                             <span th:if="${reservationPage.isLast()}" class="page-link disabled">次</span>
-                                            <a th:unless="${reservationPage.isLast()}" th:href="@{/admin/reservations(page = ${reservationPage.number + 1}, keyword = ${keyword})}" class="page-link moattravel-page-link">次</a>
+                                            <a th:unless="${reservationPage.isLast()}" th:href="@{/reservations(page = ${reservationPage.number + 1})}" class="page-link moattravel-page-link">次</a>
                                         </li>
                                     </ul>
                                 </nav>

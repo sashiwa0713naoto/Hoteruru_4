@@ -1,84 +1,76 @@
 <!DOCTYPE html>
-<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <head>
-        <div th:replace="~{fragment :: meta}"></div>   
+        <div th:replace="~{fragment :: meta}"></div>
         <div th:replace="~{fragment :: styles}"></div>
-        <title>会員一覧</title>       
+        <title>会員情報</title>
     </head>
     <body>
         <div class="moattravel-wrapper d-flex flex-column min-vh-100">
             <!-- ヘッダー -->
             <div th:replace="~{fragment :: header}"></div>
-            
+
             <main class="flex-grow-1">
                 <div class="container pt-4 pb-5 moattravel-container">
                     <div class="row">
-                        <div class="col-xxl-9 col-xl-10 col-lg-11 mx-auto">
-                            <h1 class="mb-4 text-center">会員一覧</h1>
+                        <div class="col-xl-5 col-lg-6 col-md-8 mx-auto">
+                            <nav class="mb-4" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                                <ol class="breadcrumb mb-0">
+                                    <li class="breadcrumb-item"><a th:href="@{/}">ホーム</a></li>
+                                    <li class="breadcrumb-item active" aria-current="page">会員情報</li>
+                                </ol>
+                            </nav>
 
-                            <div class="d-flex justify-content-between align-items-end flex-wrap mb-3">
-                                <form method="get" th:action="@{/admin/users}" class="moattravel-search-box mb-3">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" name="keyword" th:value="${keyword}" placeholder="氏名・フリガナ">
-                                        <button type="submit" class="btn text-white shadow-sm moattravel-btn">検索</button>
-                                    </div>
-                                </form>
-                            </div>
+                            <h1 class="mb-4 text-center">会員情報</h1>
 
                             <div th:if="${successMessage}" class="alert alert-info" role="alert">
                                 <span th:text="${successMessage}"></span>
                             </div>
 
-                            <table class="table table-striped align-middle">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">ID</th>
-                                        <th scope="col">氏名</th>
-                                        <th scope="col">フリガナ</th>
-                                        <th scope="col">メールアドレス</th>
-                                        <th scope="col">詳細</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <!-- userPage が null でない場合のみループ処理 -->
-                                    <tr th:if="${userPage != null}" th:each="user : ${userPage}">
-                                        <td th:text="${user.id}"></td>
-                                        <td th:text="${user.name}"></td>
-                                        <td th:text="${user.furigana}"></td>
-                                        <td th:text="${user.email}"></td>
-                                        <td><a th:href="@{/admin/users/__${user.id}__}">詳細</a></td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                            <div class="container mb-4">
+                                <div class="row pb-2 mb-2 border-bottom">
+                                    <div class="col-4 fw-bold">氏名</div>
+                                    <div class="col-8" th:text="${user.name}"></div>
+                                </div>
 
-                            <!-- ページネーション（userPage != null のチェックを追加して NullPointerException を防ぐ） -->
-                            <div th:if="${userPage != null and userPage.totalPages > 1}" class="d-flex justify-content-center">
-                                <nav aria-label="会員一覧ページ">
-                                    <ul class="pagination">
-                                        <li class="page-item">
-                                            <span th:if="${userPage.isFirst()}" class="page-link disabled">前</span>
-                                            <a th:unless="${userPage.isFirst()}" th:href="@{/admin/users(page = ${userPage.number - 1}, keyword = ${keyword})}" class="page-link moattravel-page-link">前</a>
-                                        </li>
-                                        <li th:each="i : ${#numbers.sequence(0, userPage.totalPages - 1)}" class="page-item">
-                                            <span th:if="${i == userPage.number}" class="page-link active moattravel-active" th:text="${i + 1}"></span>
-                                            <a th:unless="${i == userPage.number}" th:href="@{/admin/users(page = ${i}, keyword = ${keyword})}" class="page-link moattravel-page-link" th:text="${i + 1}"></a>
-                                        </li>
-                                        <li class="page-item">
-                                            <span th:if="${userPage.isLast()}" class="page-link disabled">次</span>
-                                            <a th:unless="${userPage.isLast()}" th:href="@{/admin/users(page = ${userPage.number + 1}, keyword = ${keyword})}" class="page-link moattravel-page-link">次</a>
-                                        </li>
-                                    </ul>
-                                </nav>
+                                <div class="row pb-2 mb-2 border-bottom">
+                                    <div class="col-4 fw-bold">フリガナ</div>
+                                    <div class="col-8" th:text="${user.furigana}"></div>
+                                </div>
+
+                                <div class="row pb-2 mb-2 border-bottom">
+                                    <div class="col-4 fw-bold">郵便番号</div>
+                                    <div class="col-8" th:text="${user.postalCode}"></div>
+                                </div>
+
+                                <div class="row pb-2 mb-2 border-bottom">
+                                    <div class="col-4 fw-bold">住所</div>
+                                    <div class="col-8" th:text="${user.address}"></div>
+                                </div>
+
+                                <div class="row pb-2 mb-2 border-bottom">
+                                    <div class="col-4 fw-bold">電話番号</div>
+                                    <div class="col-8" th:text="${user.phoneNumber}"></div>
+                                </div>
+
+                                <div class="row pb-2 mb-2 border-bottom">
+                                    <div class="col-4 fw-bold">メールアドレス</div>
+                                    <div class="col-8" th:text="${user.email}"></div>
+                                </div>
+                            </div>
+
+                            <div class="d-flex justify-content-center">
+                                <a th:href="@{/user/edit}" class="btn text-white shadow-sm w-50 moattravel-btn" style="background-color: #0284c7;">編集する</a>
                             </div>
                         </div>
                     </div>
                 </div>
             </main>
-            
+
             <!-- フッター -->
             <div th:replace="~{fragment :: footer}"></div>
-        </div>    
-        
-        <div th:replace="~{fragment :: scripts}"></div>  
+        </div>
+
+        <div th:replace="~{fragment :: scripts}"></div>
     </body>
 </html>

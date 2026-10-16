@@ -71,4 +71,9 @@ public class ReservationService {
     public Page<Reservation> findByUserOrderByCreatedAtDesc(User user, Pageable pageable) {
         return reservationRepository.findByUserOrderByCreatedAtDesc(user, pageable);
     }
+    
+    @Transactional
+    public void delete(Integer id) {
+        reservationRepository.deleteById(id);
+    }
 }

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+    <head>
+        <div th:replace="~{fragment :: meta}"></div>
+        <div th:replace="~{fragment :: styles}"></div>
+        <title>会員情報編集</title>
+    </head>
+    <body>
+        <div class="moattravel-wrapper d-flex flex-column min-vh-100">
+            <!-- ヘッダー（一般用） -->
+            <div th:replace="~{fragment :: header}"></div>
+
+            <main class="flex-grow-1">
+                <div class="container pt-4 pb-5 moattravel-container">
+                    <div class="row">
+                        <div class="col-xl-5 col-lg-6 col-md-8 mx-auto">
+                            <!-- パンくずリスト -->
+                            <nav class="mb-4" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                                <ol class="breadcrumb mb-0">
+                                    <li class="breadcrumb-item"><a th:href="@{/}">ホーム</a></li>
+                                    <li class="breadcrumb-item"><a th:href="@{/user}">会員情報</a></li>
+                                    <li class="breadcrumb-item active" aria-current="page">会員情報編集</li>
+                                </ol>
+                            </nav>
+
+                            <h1 class="mb-4 text-center">会員情報編集</h1>
+
+                            <!-- 一般ユーザー用更新フォーム（送信先を /user/update に指定） -->
+                            <form method="post" th:action="@{/user/update}" th:object="${userEditForm}">
+                                <input type="hidden" th:field="*{id}">
+
+                                <!-- 氏名 -->
+                                <div class="form-group row mb-3">
+                                    <label for="name" class="col-md-4 col-form-label text-md-end fw-bold">氏名</label>
+                                    <div class="col-md-8">
+                                        <div th:if="${#fields.hasErrors('name')}" class="text-danger small mb-2" th:errors="*{name}"></div>
+                                        <input type="text" class="form-control" th:field="*{name}" autofocus>
+                                    </div>
+                                </div>
+
+                                <!-- フリガナ -->
+                                <div class="form-group row mb-3">
+                                    <label for="furigana" class="col-md-4 col-form-label text-md-end fw-bold">フリガナ</label>
+                                    <div class="col-md-8">
+                                        <div th:if="${#fields.hasErrors('furigana')}" class="text-danger small mb-2" th:errors="*{furigana}"></div>
+                                        <input type="text" class="form-control" th:field="*{furigana}">
+                                    </div>
+                                </div>
+
+                                <!-- 郵便番号 -->
+                                <div class="form-group row mb-3">
+                                    <label for="postalCode" class="col-md-4 col-form-label text-md-end fw-bold">郵便番号</label>
+                                    <div class="col-md-8">
+                                        <div th:if="${#fields.hasErrors('postalCode')}" class="text-danger small mb-2" th:errors="*{postalCode}"></div>
+                                        <input type="text" class="form-control" th:field="*{postalCode}">
+                                    </div>
+                                </div>
+
+                                <!-- 住所 -->
+                                <div class="form-group row mb-3">
+                                    <label for="address" class="col-md-4 col-form-label text-md-end fw-bold">住所</label>
+                                    <div class="col-md-8">
+                                        <div th:if="${#fields.hasErrors('address')}" class="text-danger small mb-2" th:errors="*{address}"></div>
+                                        <input type="text" class="form-control" th:field="*{address}">
+                                    </div>
+                                </div>
+
+                                <!-- 電話番号 -->
+                                <div class="form-group row mb-3">
+                                    <label for="phoneNumber" class="col-md-4 col-form-label text-md-end fw-bold">電話番号</label>
+                                    <div class="col-md-8">
+                                        <div th:if="${#fields.hasErrors('phoneNumber')}" class="text-danger small mb-2" th:errors="*{phoneNumber}"></div>
+                                        <input type="text" class="form-control" th:field="*{phoneNumber}">
+                                    </div>
+                                </div>
+
+                                <!-- メールアドレス -->
+                                <div class="form-group row mb-4">
+                                    <label for="email" class="col-md-4 col-form-label text-md-end fw-bold">メールアドレス</label>
+                                    <div class="col-md-8">
+                                        <div th:if="${#fields.hasErrors('email')}" class="text-danger small mb-2" th:errors="*{email}"></div>
+                                        <input type="email" class="form-control" th:field="*{email}">
+                                    </div>
+                                </div>
+
+                                <!-- 更新ボタン -->
+                                <div class="d-flex justify-content-center">
+                                    <button type="submit" class="btn text-white shadow-sm w-50 moattravel-btn" style="background-color: #0284c7;">更新</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <!-- フッター（一般用） -->
+            <div th:replace="~{fragment :: footer}"></div>
+        </div>
+
+        <div th:replace="~{fragment :: scripts}"></div>
+    </body>
+</html>
